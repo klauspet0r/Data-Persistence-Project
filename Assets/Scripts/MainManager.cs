@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.IO;
 
 public class MainManager : MonoBehaviour
 {
@@ -85,6 +86,7 @@ public class MainManager : MonoBehaviour
             HiScoreSaver.hiScore = m_Points;
             HiScoreSaver.hiScoreName = HiScoreSaver.playerName;
             HiScoreSaver.hiScoreText = $"Hi-Score : {HiScoreSaver.hiScoreName} --> {HiScoreSaver.hiScore}";
+            SaveHiScore();
         };
 
         m_GameOver = true;
@@ -92,5 +94,23 @@ public class MainManager : MonoBehaviour
         HiScoreText.text = HiScoreSaver.hiScoreText;
         Debug.Log(HiScoreSaver.hiScoreText);
         SceneManager.LoadScene(0,LoadSceneMode.Single);
+    }
+
+    [System.Serializable]
+    class SaveData
+    {
+        public string hiScoreName;
+        public int hiScore;
+    }
+
+    public void SaveHiScore()
+    {
+        SaveData data = new SaveData();
+        data.hiScoreName = HiScoreSaver.hiScoreName;
+        data.hiScore = HiScoreSaver.hiScore;
+
+        string json = JsonUtility.ToJson(data);
+    
+        File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
     }
 }

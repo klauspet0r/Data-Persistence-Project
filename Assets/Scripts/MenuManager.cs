@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using System.IO;
 
 public class MenuManager : MonoBehaviour
 {   
@@ -15,7 +16,9 @@ public class MenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        LoadHiScore();
         HiScoreText.text = $"Hi-Score : {HiScoreSaver.hiScoreName} + {HiScoreSaver.hiScore}";
+        
     }
     
     
@@ -32,5 +35,26 @@ public class MenuManager : MonoBehaviour
     public void loadMainScene()
     {
         SceneManager.LoadScene(1,LoadSceneMode.Single);
+    }
+
+    [System.Serializable]
+    class SaveData
+    {
+        public string hiScoreName;
+        public int hiScore;
+    }
+
+
+    public void LoadHiScore()
+    {
+        string path = Application.persistentDataPath + "/savefile.json";
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            SaveData data = JsonUtility.FromJson<SaveData>(json);
+
+            HiScoreSaver.hiScoreName = data.hiScoreName;
+            HiScoreSaver.hiScore = data.hiScore;
+        }
     }
 }
