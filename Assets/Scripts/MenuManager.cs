@@ -25,7 +25,7 @@ public class MenuManager : MonoBehaviour
         if (playerNameInputField.text != HiScoreSaver.hiScoreName)
         {
             HiScoreSaver.playerName = playerNameInputField.text;
-            Debug.Log("New Player Name!");
+            /* Debug.Log("New Player Name!"); */
         }
     }
 

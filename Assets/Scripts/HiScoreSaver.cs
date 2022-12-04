@@ -13,7 +13,13 @@ public class HiScoreSaver : MonoBehaviour
     public static int hiScore = 0;
 
     private void Awake()
-    {
+    {   
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
