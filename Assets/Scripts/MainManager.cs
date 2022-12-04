@@ -11,14 +11,21 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
+    public Text HiScoreText;
     public GameObject GameOverText;
     
     private bool m_Started = false;
     private int m_Points;
     
     private bool m_GameOver = false;
-
     
+    
+   /*  private void Awake()
+    {
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    } */
+
     // Start is called before the first frame update
     void Start()
     {
@@ -36,6 +43,8 @@ public class MainManager : MonoBehaviour
                 brick.onDestroyed.AddListener(AddPoint);
             }
         }
+
+        HiScoreText.text = HiScoreSaver.hiScoreText ;
     }
 
     private void Update()
@@ -70,7 +79,18 @@ public class MainManager : MonoBehaviour
 
     public void GameOver()
     {
+        if ( m_Points > HiScoreSaver.hiScore)
+        {
+
+            HiScoreSaver.hiScore = m_Points;
+            HiScoreSaver.hiScoreName = HiScoreSaver.playerName;
+            HiScoreSaver.hiScoreText = $"Hi-Score : {HiScoreSaver.hiScoreName} --> {HiScoreSaver.hiScore}";
+        };
+
         m_GameOver = true;
         GameOverText.SetActive(true);
+        HiScoreText.text = HiScoreSaver.hiScoreText;
+        Debug.Log(HiScoreSaver.hiScoreText);
+        SceneManager.LoadScene(0,LoadSceneMode.Single);
     }
 }
